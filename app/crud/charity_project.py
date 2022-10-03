@@ -24,7 +24,6 @@ class CRUDCharityProject(CRUDBase):
             .order_by(CharityProject.create_date))  # noqa
         return projects.scalars().all()
 
-
     async def get_projects_by_completion_rate(
         self,
         session: AsyncSession()
