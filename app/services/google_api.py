@@ -9,13 +9,14 @@ from app.schemas.charity_project import CharityProjectDB
 from app.services.constants import (SPREADSHEET_DRAFT,
                                     SPREADSHEET_ROWCOUNT_DRAFT,
                                     SPREADSHEET_COLUMNCOUNT_DRAFT,
-                                    TABLE_VALUES_DRAFT)
+                                    TABLE_VALUES_DRAFT,
+									TIME_FORMAT)
 
 
 async def spreadsheets_create(wrapper_services: Aiogoogle,
                               spreadsheet_body_draft:
                               Optional[dict] = None,) -> str:
-    now_date_time = datetime.now().strftime(str)
+    now_date_time = datetime.now().strftime(TIME_FORMAT)
     service = await wrapper_services.discover('sheets', 'v4')
     if spreadsheet_body_draft is None:
         spreadsheet_body_draft = SPREADSHEET_DRAFT
@@ -57,7 +58,7 @@ async def spreadsheets_update_value(
     table_values_draft: Optional[list] = None,
 
 ):
-    now_date_time = datetime.now().strftime(str)
+    now_date_time = datetime.now().strftime(TIME_FORMAT)
     service = await wrapper_services.discover('sheets', 'v4')
 
     if table_values_draft is None:
@@ -80,16 +81,16 @@ async def spreadsheets_update_value(
                          for items_to_count in table_values])
     rows_value = len(table_values)
 
-    if (SPREADSHEET_ROWCOUNT_DRAFT >= rows_value and
+    if not (SPREADSHEET_ROWCOUNT_DRAFT >= rows_value and not
             SPREADSHEET_COLUMNCOUNT_DRAFT >= columns_value):
-        response = await wrapper_services.as_service_account(
-            service.spreadsheets.values.update(
-                spreadsheetId=spreadsheetid,
-                range=f'R1C1:R{rows_value}C{columns_value}',
-                valueInputOption='USER_ENTERED',
-                json=update_body
-            )
+        raise ValueError(f'количество строк не должно превышать {SPREADSHEET_ROWCOUNT_DRAFT}, ' 
+		                 f'a столбцов - {SPREADSHEET_COLUMNCOUNT_DRAFT}')
+    response = await wrapper_services.as_service_account(
+        service.spreadsheets.values.update(
+            spreadsheetId=spreadsheetid,
+            range=f'R1C1:R{rows_value}C{columns_value}',
+            valueInputOption='USER_ENTERED',
+            json=update_body
         )
-        return response
-    else:
-        return
+    )
+    return response
