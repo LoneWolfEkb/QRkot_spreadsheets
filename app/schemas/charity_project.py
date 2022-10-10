@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional, List, Dict
+from typing import Optional
 
 from pydantic import BaseModel, Extra, Field, PositiveInt
 
@@ -35,5 +35,3 @@ class CharityProjectDB(CharityProjectBase):
 
     class Config:
         orm_mode = True
-
-

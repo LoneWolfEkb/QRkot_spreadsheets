@@ -1,6 +1,6 @@
 from typing import Optional
 
-from sqlalchemy import select, extract
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.base import CRUDBase
@@ -27,7 +27,8 @@ class CRUDCharityProject(CRUDBase):
     @staticmethod
     async def get_projects_columns_for_completion_rate(session: AsyncSession):
         projects = await session.execute(
-            select([CharityProject.name, CharityProject.close_date, CharityProject.create_date, CharityProject.description])
+            select([CharityProject.name, CharityProject.close_date,
+                    CharityProject.create_date, CharityProject.description])
             .where(
                 CharityProject.fully_invested
             )
