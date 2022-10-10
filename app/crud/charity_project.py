@@ -25,7 +25,7 @@ class CRUDCharityProject(CRUDBase):
         return projects.scalars().all()
 
     @staticmethod
-    async def get_projects_columns_for_completion_rate(session: AsyncSession):
+    async def get_invested_projects(session: AsyncSession):
         projects = await session.execute(
             select([CharityProject.name, CharityProject.close_date,
                     CharityProject.create_date, CharityProject.description])

@@ -7,7 +7,6 @@ from app.core.db import get_async_session
 from app.core.google_client import get_service
 from app.core.user import current_superuser
 from app.crud.charity_project import CRUDCharityProject
-from app.services.constants import SPREADSHEET_DRAFT, FORMAT, TABLE_VALUES_DRAFT
 from app.services.google_api import (set_user_permissions, spreadsheets_create,
                                      spreadsheets_update_value)
 
@@ -23,12 +22,10 @@ async def get_report(
     session: AsyncSession = Depends(get_async_session),
     wrapper_services: Aiogoogle = Depends(get_service)
 ):
-    projects = await CRUDCharityProject.get_projects_columns_for_completion_rate(
+    projects = await CRUDCharityProject.get_invested_projects(
         session
     )
-    spreadsheet_id = await spreadsheets_create(wrapper_services,
-                                               spreadsheet_body_draft=SPREADSHEET_DRAFT,
-                                               format_const=FORMAT)
+    spreadsheet_id = await spreadsheets_create(wrapper_services)
     if spreadsheet_id is None:
         raise HTTPException(status_code=403,
                             detail="Не удалось создать гугл-таблицу")
@@ -42,7 +39,5 @@ async def get_report(
         spreadsheet_id,
         projects,
         wrapper_services,
-        table_values_draft=TABLE_VALUES_DRAFT,
-        format_const=FORMAT
     )
     return response
