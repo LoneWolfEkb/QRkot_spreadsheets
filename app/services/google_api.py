@@ -13,20 +13,15 @@ from app.services.constants import (SPREADSHEET_DRAFT,
 
 
 async def spreadsheets_create(wrapper_services: Aiogoogle,
-                              format_const: str,
                               spreadsheet_body_draft:
                               Optional[dict] = None,) -> str:
-    now_date_time = datetime.now().strftime(format_const)
+    now_date_time = datetime.now().strftime(str)
     service = await wrapper_services.discover('sheets', 'v4')
     if spreadsheet_body_draft is None:
         spreadsheet_body_draft = SPREADSHEET_DRAFT
     spreadsheet_body = copy.deepcopy(spreadsheet_body_draft)
     spreadsheet_body['properties']['title'] += now_date_time
     spreadsheet_body['sheets'][0]['properties']['title'] = 'Лист1'
-    spreadsheet_body['sheets'][0]['properties']['gridProperties'][
-        'rowCount'] = SPREADSHEET_ROWCOUNT_DRAFT
-    spreadsheet_body['sheets'][0]['properties']['gridProperties'][
-        'columnCount'] = SPREADSHEET_COLUMNCOUNT_DRAFT
 
     response = await wrapper_services.as_service_account(
         service.spreadsheets.create(json=spreadsheet_body)
@@ -59,11 +54,10 @@ async def spreadsheets_update_value(
     spreadsheetid: str,
     projects: List[CharityProjectDB],
     wrapper_services: Aiogoogle,
-    format_const: str,
     table_values_draft: Optional[list] = None,
 
 ):
-    now_date_time = datetime.now().strftime(format_const)
+    now_date_time = datetime.now().strftime(str)
     service = await wrapper_services.discover('sheets', 'v4')
 
     if table_values_draft is None:
@@ -96,5 +90,6 @@ async def spreadsheets_update_value(
                 json=update_body
             )
         )
-
         return response
+    else:
+        return
