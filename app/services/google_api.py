@@ -10,7 +10,7 @@ from app.services.constants import (SPREADSHEET_DRAFT,
                                     SPREADSHEET_ROWCOUNT_DRAFT,
                                     SPREADSHEET_COLUMNCOUNT_DRAFT,
                                     TABLE_VALUES_DRAFT,
-									TIME_FORMAT)
+                                    TIME_FORMAT)
 
 
 async def spreadsheets_create(wrapper_services: Aiogoogle,
@@ -83,8 +83,8 @@ async def spreadsheets_update_value(
 
     if not (SPREADSHEET_ROWCOUNT_DRAFT >= rows_value and not
             SPREADSHEET_COLUMNCOUNT_DRAFT >= columns_value):
-        raise ValueError(f'количество строк не должно превышать {SPREADSHEET_ROWCOUNT_DRAFT}, ' 
-		                 f'a столбцов - {SPREADSHEET_COLUMNCOUNT_DRAFT}')
+        raise ValueError(f'количество строк не должно превышать {SPREADSHEET_ROWCOUNT_DRAFT}, '
+                        f'a столбцов - {SPREADSHEET_COLUMNCOUNT_DRAFT}')
     response = await wrapper_services.as_service_account(
         service.spreadsheets.values.update(
             spreadsheetId=spreadsheetid,
