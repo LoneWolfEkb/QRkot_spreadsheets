@@ -3,7 +3,7 @@ FORMAT = "%Y/%m/%d %H:%M:%S"
 
 SPREADSHEET_DRAFT = {
     'properties': {
-        'title': f'Отчет на ',
+        'title': f'Отчет на ',  # noqa
         'locale': 'ru_RU'
     },
     'sheets': [{

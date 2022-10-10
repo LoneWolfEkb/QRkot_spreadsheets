@@ -59,9 +59,9 @@ async def spreadsheets_update_value(
     table_values[0].append(now_date_time)
 
     projects = sorted(((project.name,
-	                    str(project.close_date - project.create_date),
-	                    project.description) for project in projects),
-						key=lambda x: x[1])
+                        str(project.close_date - project.create_date),
+                        project.description) for project in projects),
+                      key=lambda x: x[1])
     table_values.extend(projects)
 
     update_body = {
