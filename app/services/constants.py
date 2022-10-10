@@ -23,3 +23,5 @@ TABLE_VALUES_DRAFT = [
     ['Топ проектов по скорости закрытия'],
     ['Название проекта', 'Время сбора', 'Описание']
 ]
+SPREADSHEET_ROWCOUNT_DRAFT = 100
+SPREADSHEET_COLUMNCOUNT_DRAFT = 11
