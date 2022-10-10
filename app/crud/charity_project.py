@@ -24,20 +24,12 @@ class CRUDCharityProject(CRUDBase):
             .order_by(CharityProject.create_date))  # noqa
         return projects.scalars().all()
 
-    async def get_projects_by_completion_rate(
-        self,
-        session: AsyncSession()
-    ):
+    @staticmethod
+    async def get_projects_columns_for_completion_rate(session: AsyncSession):
         projects = await session.execute(
-            select(CharityProject).where(
+            select([CharityProject.name, CharityProject.close_date, CharityProject.create_date, CharityProject.description])
+            .where(
                 CharityProject.fully_invested
-            ).order_by(
-                extract('year', self.model.close_date) -
-                extract('year', self.model.create_date),
-                extract('month', self.model.close_date) -
-                extract('month', self.model.create_date),
-                extract('day', self.model.close_date) -
-                extract('day', self.model.create_date)
             )
         )
         projects = projects.all()

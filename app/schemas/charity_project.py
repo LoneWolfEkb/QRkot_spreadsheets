@@ -37,8 +37,3 @@ class CharityProjectDB(CharityProjectBase):
         orm_mode = True
 
 
-class CharityProjectGoogle(BaseModel):
-    projects: List[Dict[str, str]] = Field(..., title='Закрытые проекты')
-
-    class Config:
-        extra = Extra.forbid
