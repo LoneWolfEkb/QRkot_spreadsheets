@@ -13,7 +13,7 @@ from app.services.constants import (SPREADSHEET_DRAFT,
                                     TIME_FORMAT)
 
 ROW_COLUMN_COUNT_TOO_BIG = ('В ваших данных строк - {rows_value}, а'
-                            'столбцов - {columns_value}, но' 
+                            'столбцов - {columns_value}, но'
                             'количество строк не'
                             'должно превышать {rowcount_draft}, '
                             'a столбцов - {columncount_draft}')
@@ -86,13 +86,13 @@ async def spreadsheets_update_value(
                         for items_to_count in table_values)
     rows_value = len(table_values)
 
-    if (SPREADSHEET_ROWCOUNT_DRAFT < rows_value
-        or SPREADSHEET_COLUMNCOUNT_DRAFT < columns_value):
+    if (SPREADSHEET_ROWCOUNT_DRAFT < rows_value or
+        SPREADSHEET_COLUMNCOUNT_DRAFT < columns_value):
         raise ValueError(ROW_COLUMN_COUNT_TOO_BIG.format(
-            rows_value = rows_value, 
-            columns_value = columns_value,
-            rowcount_draft = SPREADSHEET_ROWCOUNT_DRAFT,
-            columncount_draft = SPREADSHEET_COLUMNCOUNT_DRAFT))
+            rows_value=rows_value,
+            columns_value=columns_value,
+            rowcount_draft=SPREADSHEET_ROWCOUNT_DRAFT,
+            columncount_draft=SPREADSHEET_COLUMNCOUNT_DRAFT))
     response = await wrapper_services.as_service_account(
         service.spreadsheets.values.update(
             spreadsheetId=spreadsheetid,
