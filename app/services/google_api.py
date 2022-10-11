@@ -12,6 +12,9 @@ from app.services.constants import (SPREADSHEET_DRAFT,
                                     TABLE_VALUES_DRAFT,
                                     TIME_FORMAT)
 
+ROW_COLUMN_COUNT_TOO_BIG = (f'количество строк не'
+                            f'должно превышать {SPREADSHEET_ROWCOUNT_DRAFT}, '
+                            f'a столбцов - {SPREADSHEET_COLUMNCOUNT_DRAFT}')
 
 async def spreadsheets_create(wrapper_services: Aiogoogle,
                               spreadsheet_body_draft:
@@ -22,7 +25,6 @@ async def spreadsheets_create(wrapper_services: Aiogoogle,
         spreadsheet_body_draft = SPREADSHEET_DRAFT
     spreadsheet_body = copy.deepcopy(spreadsheet_body_draft)
     spreadsheet_body['properties']['title'] += now_date_time
-    spreadsheet_body['sheets'][0]['properties']['title'] = 'Лист1'
 
     response = await wrapper_services.as_service_account(
         service.spreadsheets.create(json=spreadsheet_body)
@@ -77,14 +79,13 @@ async def spreadsheets_update_value(
         'values': table_values,
     }
 
-    columns_value = max([len(items_to_count)
-                         for items_to_count in table_values])
+    columns_value = max(len(items_to_count)
+                         for items_to_count in table_values)
     rows_value = len(table_values)
 
-    if not (SPREADSHEET_ROWCOUNT_DRAFT >= rows_value and not
-            SPREADSHEET_COLUMNCOUNT_DRAFT >= columns_value):
-        raise ValueError(f'количество строк не должно превышать {SPREADSHEET_ROWCOUNT_DRAFT}, '
-                         f'a столбцов - {SPREADSHEET_COLUMNCOUNT_DRAFT}')
+    if (SPREADSHEET_ROWCOUNT_DRAFT < rows_value or
+            SPREADSHEET_COLUMNCOUNT_DRAFT < columns_value):
+        raise ValueError(ROW_COLUMN_COUNT_TOO_BIG)
     response = await wrapper_services.as_service_account(
         service.spreadsheets.values.update(
             spreadsheetId=spreadsheetid,

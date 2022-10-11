@@ -13,7 +13,7 @@ SPREADSHEET_DRAFT = {
         'properties': {
             'sheetType': 'GRID',
             'sheetId': 0,
-            'title': '',
+            'title': 'Лист1',
             'gridProperties': {
                 'rowCount': SPREADSHEET_ROWCOUNT_DRAFT,
                 'columnCount': SPREADSHEET_COLUMNCOUNT_DRAFT
