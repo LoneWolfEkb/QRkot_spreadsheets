@@ -87,7 +87,7 @@ async def spreadsheets_update_value(
     rows_value = len(table_values)
 
     if (SPREADSHEET_ROWCOUNT_DRAFT < rows_value or
-        SPREADSHEET_COLUMNCOUNT_DRAFT < columns_value):
+       SPREADSHEET_COLUMNCOUNT_DRAFT < columns_value):
         raise ValueError(ROW_COLUMN_COUNT_TOO_BIG.format(
             rows_value=rows_value,
             columns_value=columns_value,
