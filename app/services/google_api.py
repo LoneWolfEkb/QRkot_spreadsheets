@@ -16,6 +16,7 @@ ROW_COLUMN_COUNT_TOO_BIG = (f'количество строк не'
                             f'должно превышать {SPREADSHEET_ROWCOUNT_DRAFT}, '
                             f'a столбцов - {SPREADSHEET_COLUMNCOUNT_DRAFT}')
 
+
 async def spreadsheets_create(wrapper_services: Aiogoogle,
                               spreadsheet_body_draft:
                               Optional[dict] = None,) -> str:
@@ -80,7 +81,7 @@ async def spreadsheets_update_value(
     }
 
     columns_value = max(len(items_to_count)
-                         for items_to_count in table_values)
+                        for items_to_count in table_values)
     rows_value = len(table_values)
 
     if (SPREADSHEET_ROWCOUNT_DRAFT < rows_value or
